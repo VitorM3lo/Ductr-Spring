@@ -1,0 +1,32 @@
+{"properties": [
+  {
+    "name": "imdb.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'imdb.endpoint'"
+  },
+  {
+    "name": "torrent.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'torrent.endpoint'"
+  },
+  {
+    "name": "opensubtitles.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'opensubtitles.endpoint'"
+  },
+  {
+    "name": "opensubtitles.old.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'opensubtitles.endpoint'"
+  },
+  {
+    "name": "opensubtitles.old.endpoint.dl",
+    "type": "java.lang.String",
+    "description": "A description for 'opensubtitles.endpoint'"
+  },
+  {
+    "name": "folderpath",
+    "type": "java.lang.String",
+    "description": "A description for 'folderpath'"
+  }
+]}
