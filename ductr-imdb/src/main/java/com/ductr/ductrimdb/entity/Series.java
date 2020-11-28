@@ -8,15 +8,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Movie {
+public class Series {
   
   @Id
   @NonNull
@@ -25,6 +27,10 @@ public class Movie {
   @NonNull
   @OneToOne
   private MovieData data;
+
+  private int season;
+
+  private int episode;
 
   private Crew crew;
 

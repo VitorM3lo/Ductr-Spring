@@ -8,27 +8,47 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Movie {
-  
+public abstract class MovieData {
+
   @Id
   @NonNull
   private String id;
 
   @NonNull
-  @OneToOne
-  private MovieData data;
+  private String title;
 
-  private Crew crew;
+  private String region;
+
+  @NonNull
+  private String language;
+
+  @NonNull
+  @OneToOne
+  private Type type;
+
+  private int startYear;
+
+  private int endYear;
+
+  private int runtime;
 
   @OneToMany
-  private List<Person> principals;
+  private List<Genre> genres;
+
+  private double rating;
+
+  private long numberVotes;
+
+  private boolean adult;
 
 }
