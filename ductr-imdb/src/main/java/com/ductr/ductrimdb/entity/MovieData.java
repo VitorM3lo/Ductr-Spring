@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
-public abstract class MovieData {
+public class MovieData {
 
   @Id
   @NonNull
@@ -32,7 +32,6 @@ public abstract class MovieData {
   @NonNull
   private String language;
 
-  @NonNull
   @OneToOne
   private Type type;
 

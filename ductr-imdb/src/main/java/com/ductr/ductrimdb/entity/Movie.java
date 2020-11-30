@@ -8,11 +8,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
