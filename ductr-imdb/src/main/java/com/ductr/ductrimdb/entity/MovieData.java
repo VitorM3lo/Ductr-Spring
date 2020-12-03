@@ -4,8 +4,11 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import org.springframework.beans.factory.annotation.Required;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,11 +21,16 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
+@IdClass(MovieDataId.class)
 public class MovieData {
 
   @Id
   @NonNull
-  private String id;
+  private int id;
+
+  @Id
+  @NonNull
+  private String titleId;
 
   @NonNull
   private String title;
