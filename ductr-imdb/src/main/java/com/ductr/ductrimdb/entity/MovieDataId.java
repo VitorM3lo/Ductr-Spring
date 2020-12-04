@@ -17,7 +17,6 @@ public class MovieDataId implements Serializable {
   @NonNull
   private String titleId;
 
-  @NonNull
   private int id;
 
 }

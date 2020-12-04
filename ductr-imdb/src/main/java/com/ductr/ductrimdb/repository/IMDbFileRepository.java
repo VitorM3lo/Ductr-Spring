@@ -12,16 +12,22 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Calendar;
 import java.util.zip.GZIPInputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
 @Repository
+@Slf4j
 public class IMDbFileRepository {
+
+  @Autowired
+  IndexStateRepository indexStateRepository;
 
   @Value("${imdb.dataset.endpoint}")
   private String url;
@@ -89,17 +95,22 @@ public class IMDbFileRepository {
     BasicFileAttributes attribute = null;
     try {
       attribute = Files.readAttributes(pathDatasetFile, BasicFileAttributes.class);
-      fileCreation.setTimeInMillis(attribute.creationTime().toMillis());
+      fileCreation.setTimeInMillis(attribute.lastModifiedTime().toMillis());
     } catch (IOException e1) {
       e1.printStackTrace();
     }
+    
     final boolean createdToday = today.get(Calendar.DAY_OF_YEAR) == fileCreation.get(Calendar.DAY_OF_YEAR)
         && today.get(Calendar.YEAR) == fileCreation.get(Calendar.YEAR);
 
     if (pathDatasetFile.toFile().exists() && createdToday) {
+      log.info("No need to update " + dataset);
       return pathDatasetFile.toFile();
     }
 
+    this.indexStateRepository.deleteAll();
+
+    log.info("Started download of: " + dataset);
     Flux<DataBuffer> compressedFile = WebClient.create(url + dataset).get().retrieve().bodyToFlux(DataBuffer.class);
     DataBufferUtils.write(compressedFile, pathCompressedFile, StandardOpenOption.CREATE).block();
     FileOutputStream fileOutputStream = null;
@@ -115,6 +126,7 @@ public class IMDbFileRepository {
       e.printStackTrace();
       return null;
     } finally {
+      log.info("Ended download of: " + dataset);
       if (fileOutputStream != null) {
         try {
           fileOutputStream.close();

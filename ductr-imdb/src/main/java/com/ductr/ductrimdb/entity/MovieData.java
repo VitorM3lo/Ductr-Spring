@@ -2,13 +2,12 @@ package com.ductr.ductrimdb.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.springframework.beans.factory.annotation.Required;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +32,10 @@ public class MovieData {
   private String titleId;
 
   @NonNull
+  @Column(length = 1000)
   private String title;
 
+  @NonNull
   private String region;
 
   @NonNull
