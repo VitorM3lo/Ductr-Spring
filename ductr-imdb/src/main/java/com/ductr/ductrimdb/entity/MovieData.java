@@ -6,7 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
@@ -50,7 +50,7 @@ public class MovieData {
 
   private int runtime;
 
-  @OneToMany
+  @ManyToMany
   private List<Genre> genres;
 
   private double rating;

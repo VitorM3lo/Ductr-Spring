@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Calendar;
 import java.util.zip.GZIPInputStream;
+
+import com.ductr.ductrimdb.service.IndexStateService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +30,7 @@ import reactor.core.publisher.Flux;
 public class IMDbFileRepository {
 
   @Autowired
-  IndexStateRepository indexStateRepository;
+  IndexStateService indexStateService;
 
   @Value("${imdb.dataset.endpoint}")
   private String url;
@@ -90,38 +93,38 @@ public class IMDbFileRepository {
     Calendar fileCreation = Calendar.getInstance();
 
     Path pathCompressedFile = Paths.get(folder + dataset);
+    Path pathDatasetFileTemp = Paths.get(folder + dataset.replace(".gz", ".temp"));
     Path pathDatasetFile = Paths.get(folder + dataset.replace(".gz", ""));
 
-    BasicFileAttributes attribute = null;
-    try {
-      attribute = Files.readAttributes(pathDatasetFile, BasicFileAttributes.class);
-      fileCreation.setTimeInMillis(attribute.lastModifiedTime().toMillis());
-    } catch (IOException e1) {
-      e1.printStackTrace();
-    }
-    
-    final boolean createdToday = today.get(Calendar.DAY_OF_YEAR) == fileCreation.get(Calendar.DAY_OF_YEAR)
-        && today.get(Calendar.YEAR) == fileCreation.get(Calendar.YEAR);
+    if (pathDatasetFile.toFile().exists()) {
+      BasicFileAttributes attribute = null;
+      try {
+        attribute = Files.readAttributes(pathDatasetFile, BasicFileAttributes.class);
+        fileCreation.setTimeInMillis(attribute.lastModifiedTime().toMillis());
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
 
-    if (pathDatasetFile.toFile().exists() && createdToday) {
-      log.info("No need to update " + dataset);
-      return pathDatasetFile.toFile();
-    }
+      final boolean createdToday = today.get(Calendar.DAY_OF_YEAR) == fileCreation.get(Calendar.DAY_OF_YEAR)
+          && today.get(Calendar.YEAR) == fileCreation.get(Calendar.YEAR);
 
-    this.indexStateRepository.deleteAll();
+      if (pathDatasetFile.toFile().exists() && createdToday) {
+        log.info("No need to update " + dataset);
+        return pathDatasetFile.toFile();
+      }
+    }
 
     log.info("Started download of: " + dataset);
     Flux<DataBuffer> compressedFile = WebClient.create(url + dataset).get().retrieve().bodyToFlux(DataBuffer.class);
     DataBufferUtils.write(compressedFile, pathCompressedFile, StandardOpenOption.CREATE).block();
     FileOutputStream fileOutputStream = null;
     try (GZIPInputStream gzipInputStream = new GZIPInputStream(new FileInputStream(pathCompressedFile.toFile()))) {
-      fileOutputStream = new FileOutputStream(pathDatasetFile.toFile());
+      fileOutputStream = new FileOutputStream(pathDatasetFileTemp.toFile());
       byte[] buffer = new byte[1024];
       int len;
       while ((len = gzipInputStream.read(buffer)) > 0) {
         fileOutputStream.write(buffer, 0, len);
       }
-      return pathDatasetFile.toFile();
     } catch (IOException e) {
       e.printStackTrace();
       return null;
@@ -134,12 +137,35 @@ public class IMDbFileRepository {
           e.printStackTrace();
         }
       }
-      try {
-        Files.delete(pathCompressedFile);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     }
+
+    try {
+      if (pathDatasetFile.toFile().exists()) {
+        BasicFileAttributes tempFileAttributes = Files.readAttributes(pathDatasetFileTemp, BasicFileAttributes.class);
+        BasicFileAttributes datasetFileAttributes = Files.readAttributes(pathDatasetFile, BasicFileAttributes.class);
+        if (tempFileAttributes.size() == datasetFileAttributes.size()) {
+          Files.delete(pathDatasetFileTemp);
+        } else {
+          Files.delete(pathDatasetFile);
+          Files.move(pathDatasetFileTemp.toFile().toPath(), pathDatasetFile.toFile().toPath(),
+              StandardCopyOption.REPLACE_EXISTING);
+        }
+      } else {
+        Files.move(pathDatasetFileTemp.toFile().toPath(), pathDatasetFile.toFile().toPath(),
+            StandardCopyOption.REPLACE_EXISTING);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+      return null;
+    }
+
+    try {
+      Files.delete(pathCompressedFile);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    return pathDatasetFile.toFile();
   }
 
 }

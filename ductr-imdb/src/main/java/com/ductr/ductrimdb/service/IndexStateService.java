@@ -19,8 +19,8 @@ public class IndexStateService {
     return optional.isPresent() ? optional.get() : null;
   }
 
-  public void setIndexState(IndexState state) {
-    repository.save(state);
+  public IndexState setIndexState(IndexState state) {
+    return repository.save(state);
   }
 
 }

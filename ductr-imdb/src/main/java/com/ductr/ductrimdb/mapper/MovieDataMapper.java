@@ -33,9 +33,9 @@ public class MovieDataMapper {
     dto.setOriginalTitle(line[3]);
     dto.setAdult(Boolean.parseBoolean(line[4]));
     dto.setStartYear(Integer.parseInt(line[5]));
-    dto.setEndYear(Integer.parseInt(line[6]));
-    dto.setRuntimeMinutes(Integer.parseInt(line[7]));
-    dto.setGenres(Arrays.asList(line[0].split(" ")));
+    dto.setEndYear(!line[6].equals("\\N") ? Integer.parseInt(line[6]) : 0);
+    dto.setRuntimeMinutes(!line[7].equals("\\N") ? Integer.parseInt(line[7]) : 0);
+    dto.setGenres(Arrays.asList(line[8].split(",")));
     return dto;
   }
 
