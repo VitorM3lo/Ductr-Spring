@@ -13,9 +13,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Calendar;
 import java.util.zip.GZIPInputStream;
 
-import com.ductr.ductrimdb.service.IndexStateService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -29,62 +26,14 @@ import reactor.core.publisher.Flux;
 @Slf4j
 public class IMDbFileRepository {
 
-  @Autowired
-  IndexStateService indexStateService;
-
   @Value("${imdb.dataset.endpoint}")
   private String url;
-
-  @Value("${crew.dataset}")
-  String crewDataset;
-
-  @Value("${movie.basics.dataset}")
-  String movieBasicsDataset;
-
-  @Value("${principals.dataset}")
-  String moviePrincipalsDataset;
-
-  @Value("${person.dataset}")
-  String personDataset;
-
-  @Value("${episodes.dataset}")
-  String episodesDataset;
-
-  @Value("${ratings.dataset}")
-  String ratingsDataset;
-
-  @Value("${movie.dataset}")
-  String movieDataDataset;
 
   @Value("${file.repository}")
   private String folder;
 
-  public File getMovieDataBasicsFile() {
-    return this.downloadFile(movieBasicsDataset);
-  }
-
-  public File getMovieDataFile() {
-    return this.downloadFile(movieDataDataset);
-  }
-
-  public File getPersonFile() {
-    return this.downloadFile(personDataset);
-  }
-
-  public File getRatingsFile() {
-    return this.downloadFile(ratingsDataset);
-  }
-
-  public File getEpisodesFile() {
-    return this.downloadFile(episodesDataset);
-  }
-
-  public File getPrincipalsFile() {
-    return this.downloadFile(moviePrincipalsDataset);
-  }
-
-  public File getCrewFile() {
-    return this.downloadFile(crewDataset);
+  public File getFile(String filename) {
+    return this.downloadFile(filename);
   }
 
   private File downloadFile(String dataset) {
