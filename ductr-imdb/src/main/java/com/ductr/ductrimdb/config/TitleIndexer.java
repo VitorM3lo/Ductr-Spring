@@ -2,19 +2,12 @@ package com.ductr.ductrimdb.config;
 
 import java.io.File;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import com.ductr.ductrimdb.entity.Title;
-import com.ductr.ductrimdb.listener.GenericJobListener;
 import com.ductr.ductrimdb.mapper.TitleMapper;
 
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.database.JpaItemWriter;
@@ -22,32 +15,17 @@ import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.orm.jpa.JpaTransactionManager;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
 @EnableBatchProcessing
-public class TitleIndexer extends DefaultBatchConfigurer {
-
-  @Autowired
-  DataSource dataSource;
-  
-  @Autowired
-  EntityManagerFactory emf;
-  
-  @Autowired
-  private JobBuilderFactory jobBuilderFactory;
-  
-  @Autowired
-  private StepBuilderFactory stepBuilderFactory;
+public class TitleIndexer extends IndexerBatchConfigurer {
   
   @Value("${file.repository}")
   private String folder;
@@ -56,29 +34,14 @@ public class TitleIndexer extends DefaultBatchConfigurer {
   private String file;
   
   @Bean
-  @Primary
-  public JpaTransactionManager jpaTransactionManager() {
-    final JpaTransactionManager transactionManager = new JpaTransactionManager();
-    transactionManager.setDataSource(this.dataSource);
-    return transactionManager;
-  }
-  
-  @Bean
-  public Job indexerJob() {
-    return jobBuilderFactory.get("indexerJob").listener(getTitleListener()).start(indexTitles()).build();
+  public Job titleIndexerJob() {
+    return jobBuilderFactory.get("titleIndexerJob").listener(getJobListener(file)).start(indexTitles()).build();
   }
 
   @Bean
   public Step indexTitles() {
-    return stepBuilderFactory.get("indexTitles").transactionManager(jpaTransactionManager()).<Title, Title>chunk(1000)
+    return stepBuilderFactory.get("indexTitles").transactionManager(getTransactionManager()).<Title, Title>chunk(1000)
         .reader(titleReader()).writer(titleWriter()).build();
-  }
-
-  @Bean
-  public JobExecutionListener getTitleListener() {
-    GenericJobListener jobListener = new GenericJobListener();
-    jobListener.setFile(file);
-    return jobListener;
   }
 
   @Bean

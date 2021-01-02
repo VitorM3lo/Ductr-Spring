@@ -11,9 +11,6 @@ import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.validation.BindException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class TitleMapper implements FieldSetMapper<Title> {
 
   @Override
@@ -40,7 +37,6 @@ public class TitleMapper implements FieldSetMapper<Title> {
     title.setGenres(Arrays.asList(fieldSet.readString("genres").split(",")).stream().map(g -> new Genre(g))
         .collect(Collectors.toList()));
 
-    log.info("Read: " + title.getTconst());
     return title;
   }
 }

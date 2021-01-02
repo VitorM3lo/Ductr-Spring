@@ -1,5 +1,6 @@
 package com.ductr.ductrimdb.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,8 +23,10 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Title {
-  
+public class Title implements Serializable {
+
+  private static final long serialVersionUID = 1L;
+
   @Id
   @NonNull
   private String tconst;
@@ -31,21 +34,21 @@ public class Title {
   @NonNull
   @Embedded
   private Type titleType;
-  
+
   @NonNull
   @Column(length = 1000)
   private String primaryTitle;
-  
+
   @NonNull
   @Column(length = 1000)
   private String originalTitle;
 
   private boolean isAdult;
-  
+
   private int startYear;
-  
+
   private int endYear;
-  
+
   private int runtimeMinutes;
 
   private double rating;
@@ -61,5 +64,8 @@ public class Title {
 
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   List<Person> principals;
+
+  @ElementCollection
+  private List<TitleRegion> alternateTitles;
 
 }
