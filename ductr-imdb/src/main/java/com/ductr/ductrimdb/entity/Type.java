@@ -1,5 +1,7 @@
 package com.ductr.ductrimdb.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +15,9 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Type {
+public class Type implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   @NonNull
   private String type;

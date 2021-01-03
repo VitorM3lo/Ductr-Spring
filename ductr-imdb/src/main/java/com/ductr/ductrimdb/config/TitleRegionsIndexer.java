@@ -10,7 +10,6 @@ import com.ductr.ductrimdb.mapper.TitleRegionsMapper;
 import com.ductr.ductrimdb.processor.TitleRegionDataProcessor;
 import com.ductr.ductrimdb.processor.TitleRegionProcessor;
 
-import org.hibernate.type.TrueFalseType;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;

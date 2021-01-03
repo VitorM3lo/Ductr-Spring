@@ -20,10 +20,12 @@ public class DuctrImdbApplication {
 		Job titleJob = (Job) appContext.getBean("titleIndexerJob");
 		Job ratingsJob = (Job) appContext.getBean("ratingsIndexerJob");
 		Job titleRegionJob = (Job) appContext.getBean("titleRegionIndexerJob");
+		Job episodeJob = (Job) appContext.getBean("episodeIndexerJob");
 		try {
 			// jobLauncher.run(titleJob, new JobParameters());
 			// jobLauncher.run(ratingsJob, new JobParameters());
-			jobLauncher.run(titleRegionJob, new JobParameters());
+			// jobLauncher.run(titleRegionJob, new JobParameters());
+			jobLauncher.run(episodeJob, new JobParameters());
 		} catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException
 				| JobParametersInvalidException e) {
 			e.printStackTrace();
