@@ -1,23 +1,21 @@
-package com.ductr.ductrimdb.entity;
+package com.ductr.ductrentity.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Embeddable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class TitleRegion {
+public class Genre {
 
-  @Column(length = 1000)
-  private String title;
-  private String region;
-  private boolean original;
+  @NonNull
+  private String genre;
 
 }

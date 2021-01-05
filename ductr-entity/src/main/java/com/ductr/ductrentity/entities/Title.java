@@ -1,4 +1,4 @@
-package com.ductr.ductrimdb.entity;
+package com.ductr.ductrentity.entities;
 
 import java.io.Serializable;
 import java.util.List;

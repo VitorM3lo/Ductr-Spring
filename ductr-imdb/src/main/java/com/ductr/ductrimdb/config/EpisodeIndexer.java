@@ -2,7 +2,7 @@ package com.ductr.ductrimdb.config;
 
 import java.io.File;
 
-import com.ductr.ductrimdb.entity.Episode;
+import com.ductr.ductrentity.entities.Episode;
 import com.ductr.ductrimdb.entity.EpisodeData;
 import com.ductr.ductrimdb.mapper.EpisodeMapper;
 import com.ductr.ductrimdb.processor.EpisodeDataProcessor;
@@ -40,7 +40,8 @@ public class EpisodeIndexer extends IndexerBatchConfigurer {
   @Bean
   public Step indexEpisodes() {
     return stepBuilderFactory.get("indexEpisodes").allowStartIfComplete(true)
-        .transactionManager(getTransactionManager()).<EpisodeData, Episode>chunk(1000).reader(episodeReader())
+        .transactionManager(getTransactionManager()).<EpisodeData, Episode>chunk(1000)
+        .reader(episodeReader())
         .processor(getEpisodeProcessor()).writer(episodeWriter()).build();
   }
 

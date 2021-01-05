@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ductr.ductrimdb.entity.Title;
+import com.ductr.ductrentity.entities.Title;
 import com.ductr.ductrimdb.entity.TitleRegionData;
 import com.ductr.ductrimdb.mapper.TitleRegionsMapper;
 import com.ductr.ductrimdb.processor.TitleRegionDataProcessor;

@@ -1,6 +1,6 @@
 package com.ductr.ductrimdb.repository;
 
-import com.ductr.ductrimdb.entity.Title;
+import com.ductr.ductrentity.entities.Title;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

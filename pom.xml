@@ -11,6 +11,7 @@
 	<modules>
 		<module>ductr-main</module>
 		<module>ductr-imdb</module>
+		<module>ductr-entity</module>
 	</modules>
 
 </project>

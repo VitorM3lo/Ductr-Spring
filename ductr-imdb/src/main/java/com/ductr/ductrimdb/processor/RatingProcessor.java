@@ -2,7 +2,7 @@ package com.ductr.ductrimdb.processor;
 
 import java.util.Optional;
 
-import com.ductr.ductrimdb.entity.Title;
+import com.ductr.ductrentity.entities.Title;
 import com.ductr.ductrimdb.repository.TitleRepository;
 
 import org.springframework.batch.item.ItemProcessor;

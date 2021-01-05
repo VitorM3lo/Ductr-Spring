@@ -3,8 +3,8 @@ package com.ductr.ductrimdb.processor;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import com.ductr.ductrimdb.entity.Title;
-import com.ductr.ductrimdb.entity.TitleRegion;
+import com.ductr.ductrentity.entities.Title;
+import com.ductr.ductrentity.entities.TitleRegion;
 import com.ductr.ductrimdb.entity.TitleRegionData;
 import com.ductr.ductrimdb.repository.TitleRepository;
 

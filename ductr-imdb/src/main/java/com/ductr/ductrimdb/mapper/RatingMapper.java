@@ -1,6 +1,6 @@
 package com.ductr.ductrimdb.mapper;
 
-import com.ductr.ductrimdb.entity.Title;
+import com.ductr.ductrentity.entities.Title;
 
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;

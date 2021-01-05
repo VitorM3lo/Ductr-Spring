@@ -3,9 +3,9 @@ package com.ductr.ductrimdb.mapper;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import com.ductr.ductrimdb.entity.Genre;
-import com.ductr.ductrimdb.entity.Title;
-import com.ductr.ductrimdb.entity.Type;
+import com.ductr.ductrentity.entities.Genre;
+import com.ductr.ductrentity.entities.Title;
+import com.ductr.ductrentity.entities.Type;
 
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;

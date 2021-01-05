@@ -2,7 +2,7 @@ package com.ductr.ductrimdb.config;
 
 import java.io.File;
 
-import com.ductr.ductrimdb.entity.Title;
+import com.ductr.ductrentity.entities.Title;
 import com.ductr.ductrimdb.mapper.TitleMapper;
 
 import org.springframework.batch.core.Job;

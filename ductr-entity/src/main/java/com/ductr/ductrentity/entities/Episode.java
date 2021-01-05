@@ -1,4 +1,4 @@
-package com.ductr.ductrimdb.entity;
+package com.ductr.ductrentity.entities;
 
 import java.io.Serializable;
 
@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import io.micrometer.core.lang.NonNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Entity
 @Data
@@ -20,10 +20,11 @@ public class Episode implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
+  @NonNull
   private EpisodeKey title;
 
-  @NonNull
   @ManyToOne
+  @NonNull
   private Title titleParent;
 
   private int season;
