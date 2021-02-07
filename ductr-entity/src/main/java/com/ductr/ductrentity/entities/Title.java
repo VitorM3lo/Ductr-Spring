@@ -1,16 +1,15 @@
 package com.ductr.ductrentity.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,8 +31,8 @@ public class Title implements Serializable {
   private String tconst;
 
   @NonNull
-  @Embedded
-  private Type titleType;
+  @ManyToOne
+  private Type type;
 
   @NonNull
   @Column(length = 1000)
@@ -53,19 +52,19 @@ public class Title implements Serializable {
 
   private double rating;
 
-  @ElementCollection
-  private List<Genre> genres;
+  @ManyToMany
+  private Set<Genre> genres;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  List<Person> directors;
+  @OneToMany
+  private Set<TitleRegion> alternateTitles;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  List<Person> writers;
+  @ManyToMany(fetch = FetchType.LAZY)
+  private Set<Person> directors;
 
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  List<Person> principals;
+  @ManyToMany(fetch = FetchType.LAZY)
+  private Set<Person> writers;
 
-  @ElementCollection
-  private List<TitleRegion> alternateTitles;
+  @ManyToMany(fetch = FetchType.LAZY)
+  private Set<Person> principals;
 
 }

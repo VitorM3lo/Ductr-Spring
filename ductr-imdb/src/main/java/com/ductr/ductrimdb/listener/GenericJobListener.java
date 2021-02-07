@@ -29,7 +29,7 @@ public class GenericJobListener implements JobExecutionListener, InitializingBea
 
   @Override
   public void afterJob(JobExecution jobExecution) {
-    log.info("Title basic data indexing complete...");
+    log.info(jobExecution.getJobConfigurationName() + " complete...");
   }
 
   @Override

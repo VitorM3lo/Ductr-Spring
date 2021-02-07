@@ -12,15 +12,11 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 
 @Configuration
 @EnableBatchProcessing
 public abstract class IndexerBatchConfigurer {
-
-  @Autowired
-  protected DataSource dataSource;
 
   @Autowired
   protected EntityManagerFactory emf;
@@ -31,13 +27,7 @@ public abstract class IndexerBatchConfigurer {
   @Autowired
   protected StepBuilderFactory stepBuilderFactory;
 
-  @Bean
-  @Primary
-  public JpaTransactionManager getTransactionManager() {
-    final JpaTransactionManager transactionManager = new JpaTransactionManager();
-    transactionManager.setDataSource(this.dataSource);
-    return transactionManager;
-  }
+  public abstract JpaTransactionManager getTransactionManager(DataSource dataSource);
 
   @Bean
   public JobExecutionListener getJobListener(String file) {

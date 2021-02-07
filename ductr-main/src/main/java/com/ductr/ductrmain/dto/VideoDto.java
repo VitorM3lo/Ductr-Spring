@@ -3,17 +3,15 @@ package com.ductr.ductrmain.dto;
 import com.ductr.ductrmain.entity.StatusEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class VideoDto implements BaseDto {
+public class VideoDto {
 
   @JsonProperty("id")
   private int id;

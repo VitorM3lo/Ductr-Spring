@@ -1,6 +1,7 @@
 package com.ductr.ductrimdb.mapper;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import com.ductr.ductrentity.entities.Genre;
@@ -23,7 +24,7 @@ public class TitleMapper implements FieldSetMapper<Title> {
     String helper = null;
 
     title.setTconst(fieldSet.readString("tconst"));
-    title.setTitleType(new Type(fieldSet.readString("titleType")));
+    title.setType(new Type(fieldSet.readString("titleType")));
     title.setPrimaryTitle(fieldSet.readString("primaryTitle"));
     title.setOriginalTitle(fieldSet.readString("originalTitle"));
     helper = fieldSet.readString("isAdult");
@@ -34,8 +35,8 @@ public class TitleMapper implements FieldSetMapper<Title> {
     title.setEndYear(!helper.equals("\\N") ? Integer.parseInt(helper) : 0);
     helper = fieldSet.readString("runtimeMinutes");
     title.setRuntimeMinutes(!helper.equals("\\N") ? Integer.parseInt(helper) : 0);
-    title.setGenres(Arrays.asList(fieldSet.readString("genres").split(",")).stream().map(g -> new Genre(g))
-        .collect(Collectors.toList()));
+    title.setGenres(new HashSet<>(Arrays.asList(fieldSet.readString("genres").split(",")).stream().map(g -> !g.equals("\\N") ? new Genre(g) : null)
+        .collect(Collectors.toList())));
 
     return title;
   }

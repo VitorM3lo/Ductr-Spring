@@ -1,21 +1,21 @@
 package com.ductr.ductrentity.entities;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
-@Embeddable
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
 public class Genre {
 
-  @NonNull
+  @Id
   private String genre;
 
 }

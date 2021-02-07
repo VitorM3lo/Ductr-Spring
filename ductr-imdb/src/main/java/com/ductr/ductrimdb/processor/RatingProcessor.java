@@ -21,7 +21,7 @@ public class RatingProcessor implements ItemProcessor<Title, Title> {
       fetchedTitle.setRating(item.getRating());
       return fetchedTitle;
     }
-    return item;
+    return null;
   }
   
 }

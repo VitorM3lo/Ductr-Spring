@@ -16,8 +16,8 @@ public class RatingMapper implements FieldSetMapper<Title> {
 
     Title title = new Title();
     title.setTconst(fieldSet.readString("tconst"));
-    title.setRating(fieldSet.readDouble("averageRating"));
+    title.setRating(fieldSet.readFloat("averageRating"));
     return title;
   }
-  
+
 }

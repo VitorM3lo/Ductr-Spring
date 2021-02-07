@@ -2,6 +2,8 @@ package com.ductr.ductrimdb.config;
 
 import java.io.File;
 
+import javax.sql.DataSource;
+
 import com.ductr.ductrentity.entities.Episode;
 import com.ductr.ductrimdb.entity.EpisodeData;
 import com.ductr.ductrimdb.mapper.EpisodeMapper;
@@ -17,10 +19,13 @@ import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 
 @Configuration
 @EnableBatchProcessing
@@ -32,6 +37,9 @@ public class EpisodeIndexer extends IndexerBatchConfigurer {
   @Value("${episodes.dataset}")
   private String file;
 
+  @Autowired
+  DataSource datasource;
+
   @Bean
   public Job episodeIndexerJob() {
     return jobBuilderFactory.get("episodeIndexerJob").listener(getJobListener(file)).start(indexEpisodes()).build();
@@ -40,8 +48,7 @@ public class EpisodeIndexer extends IndexerBatchConfigurer {
   @Bean
   public Step indexEpisodes() {
     return stepBuilderFactory.get("indexEpisodes").allowStartIfComplete(true)
-        .transactionManager(getTransactionManager()).<EpisodeData, Episode>chunk(1000)
-        .reader(episodeReader())
+        .transactionManager(getTransactionManager(datasource)).<EpisodeData, Episode>chunk(1000).reader(episodeReader())
         .processor(getEpisodeProcessor()).writer(episodeWriter()).build();
   }
 
@@ -72,6 +79,15 @@ public class EpisodeIndexer extends IndexerBatchConfigurer {
   @Bean
   public JpaItemWriter<Episode> episodeWriter() {
     return new JpaItemWriterBuilder<Episode>().entityManagerFactory(emf).build();
+  }
+
+  @Primary
+  @Bean("episodesJobTransactionManager")
+  @Override
+  public JpaTransactionManager getTransactionManager(DataSource dataSource) {
+    final JpaTransactionManager transactionManager = new JpaTransactionManager();
+    transactionManager.setDataSource(dataSource);
+    return transactionManager;
   }
 
 }

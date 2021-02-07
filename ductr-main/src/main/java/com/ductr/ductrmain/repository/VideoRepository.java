@@ -2,9 +2,11 @@ package com.ductr.ductrmain.repository;
 
 import com.ductr.ductrmain.entity.Video;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface VideoRepository extends CrudRepository<Video, Integer> {
+@Repository
+public interface VideoRepository extends JpaRepository<Video, Integer> {
 
   Video findByName(String name);
 

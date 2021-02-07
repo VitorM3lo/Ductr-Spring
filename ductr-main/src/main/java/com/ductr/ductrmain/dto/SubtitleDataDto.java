@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.Setter;
+import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Setter
-public class SubtitleDataDto implements BaseDto {
+@Data
+public class SubtitleDataDto {
 
   @JsonAlias("IDSubtitleFile")
   private String id;
