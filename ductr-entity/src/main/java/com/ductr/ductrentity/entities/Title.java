@@ -31,7 +31,7 @@ public class Title implements Serializable {
   private String tconst;
 
   @NonNull
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private Type type;
 
   @NonNull
@@ -52,10 +52,10 @@ public class Title implements Serializable {
 
   private double rating;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   private Set<Genre> genres;
 
-  @OneToMany
+  @OneToMany(fetch = FetchType.LAZY)
   private Set<TitleRegion> alternateTitles;
 
   @ManyToMany(fetch = FetchType.LAZY)

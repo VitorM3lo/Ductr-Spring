@@ -18,8 +18,9 @@ public class SearchController {
 
   @GetMapping("titles")
   public List<TitleDto> getTitles(@RequestParam String search, @RequestParam(required = false) String type,
-      @RequestParam(required = false) String genre, @RequestParam int page) {
-    return searchService.searchTitles(search, type, genre, page);
+      @RequestParam(required = false) String genre, @RequestParam(required = false, defaultValue = "0") double rating,
+      @RequestParam int page) {
+    return searchService.searchTitles(search, type, genre, rating, page);
   }
 
 }
