@@ -42,6 +42,12 @@ public class Title implements Serializable {
   @Column(length = 1000)
   private String originalTitle;
 
+  @Column(length = 1000)
+  private String description;
+
+  @Column(length = 1000)
+  private String posterLink;
+
   private boolean isAdult;
 
   private int startYear;

@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ductr.ductrentity.entities.Title;
+import com.ductr.ductrimdb.dto.GenreDto;
 import com.ductr.ductrimdb.dto.TitleDto;
+import com.ductr.ductrimdb.dto.TypeDto;
+import com.ductr.ductrimdb.repository.GenreRepository;
 import com.ductr.ductrimdb.repository.TitleRepository;
+import com.ductr.ductrimdb.repository.TypeRepository;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +25,13 @@ public class SearchService {
   private TitleRepository repository;
 
   @Autowired
-  ModelMapper modelMapper;
+  private GenreRepository genreRepository;
+
+  @Autowired
+  private TypeRepository typeRepository;
+
+  @Autowired
+  private ModelMapper modelMapper;
 
   public List<TitleDto> searchTitles(String title, String type, String genre, double rating, int page) {
     PageRequest pageRequest = PageRequest.of(page - 1, 5);
@@ -32,7 +41,8 @@ public class SearchService {
       List<TitleDto> dtos = new ArrayList<>();
       for (Title titleObj : titles) {
         TitleDto dto = modelMapper.map(titleObj, TitleDto.class);
-        dto.setAlternateTitles(titleObj.getAlternateTitles().stream().map(tr -> tr.getTitle()).distinct().collect(Collectors.toList()));
+        dto.setAlternateTitles(
+            titleObj.getAlternateTitles().stream().map(tr -> tr.getTitle()).distinct().collect(Collectors.toList()));
         dto.setGenres(titleObj.getGenres().stream().map(g -> g.getGenre()).collect(Collectors.toList()));
         dto.setType(titleObj.getType().getType());
         dto.setTitle(titleObj.getPrimaryTitle());
@@ -41,6 +51,14 @@ public class SearchService {
       return dtos;
     }
     return null;
+  }
+
+  public List<TypeDto> getTypes() {
+    return typeRepository.findAll().stream().map(t -> modelMapper.map(t, TypeDto.class)).collect(Collectors.toList());
+  }
+
+  public List<GenreDto> getGenres() {
+    return genreRepository.findAll().stream().map(g -> modelMapper.map(g, GenreDto.class)).collect(Collectors.toList());
   }
 
 }

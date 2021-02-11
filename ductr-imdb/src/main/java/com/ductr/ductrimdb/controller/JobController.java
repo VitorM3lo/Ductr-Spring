@@ -54,6 +54,7 @@ public class JobController {
           | JobParametersInvalidException e) {
         e.printStackTrace();
       }
+      runnerThread = null;
     }
   }
 

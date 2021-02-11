@@ -9,6 +9,8 @@ public class TitleDto {
 
   private String tconst;
   private String title;
+  private String description;
+  private String posterLink;
   private double rating;
   private int startYear;
   private int endYear;
